@@ -123,3 +123,8 @@
 | Exit        | 10     | Exits the program with code 0                  | N/A                            | N/A          |
 
 ## [Дополнительное задание: видео](Дополнительно.mp4)
+
+
+
+https://github.com/user-attachments/assets/1dc4015f-7bf0-49b6-9424-7ecc1937e44e
+
