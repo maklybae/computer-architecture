@@ -20,3 +20,6 @@
   - [ИДЗ-1](IHW1/)
     - [**Отчет**](IHW1/README.md)
     - [Программа](IHW1/program/)
+  - [ИДЗ-2](IHW2/)
+    - [**Отчет**](IHW2/README.md)
+    - [Программа](IHW2/program/)
