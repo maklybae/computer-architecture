@@ -1,0 +1,81 @@
+# .include "macro-common.mac"
+
+# Макроопределение, проверяющее параметры числа в заданном регистре с плавающей точкой
+# Номер регистра (его обозначение в ассемблере) задается первым параметром
+# Размер числа задается числом разрядов: FLOAT = 32 или DOUBLE = 64
+	.eqv FLOAT  32
+	.eqv DOUBLE 64
+.macro isFloatClass (%fpRegister, %fpSize)
+    .text
+    # Проверка разрядности используемого регистра
+    li t0, 32
+    li t1, %fpSize
+    bne t0, t1, not_32
+    print_str ("Проверка для 32-разрядного числа с плавающей точкой\n")
+    fclass.s t2, %fpRegister
+    j outAnalysisResults
+not_32:
+    li t0, 64
+    bne t0, t1, not_64
+    print_str ("Проверка для 64-разрядного числа с плавающей точкой\n")
+    fclass.d t2, %fpRegister
+    j outAnalysisResults
+not_64:
+    print_str ("Некорректно указан размер числа с плавающей точкой\n")
+    j endFclassAnalysis
+	# Вывод результатов анализа
+outAnalysisResults:
+	li t0, 0x1	# Проверка установки 0-го разряда
+	bne t0, t2, else_1
+    print_str ("Разряд 0: минус бесконечностьn")
+    j endFclassAnalysis
+else_1:
+	li t0, 0x2	# Проверка установки 1-го разряда
+	bne t0, t2, else_2
+    print_str ("Разряд 1: отрицительное нормализованное число\n")
+    j endFclassAnalysis
+else_2:
+	li t0, 0x4	# Проверка установки 2-го разряда
+	bne t0, t2, else_3
+    print_str ("Разряд 2: отрицительное денормализованное число\n")
+    j endFclassAnalysis
+else_3:
+	li t0, 0x8	# Проверка установки 3-го разряда
+	bne t0, t2, else_4
+    print_str ("Разряд 3: отрицательный ноль\n")
+    j endFclassAnalysis
+else_4:
+	li t0, 0x10	# Проверка установки 4-го разряда
+	bne t0, t2, else_5
+    print_str ("Разряд 4: положительный ноль\n")
+    j endFclassAnalysis
+else_5:
+	li t0, 0x20	# Проверка установки 5-го разряда
+	bne t0, t2, else_6
+    print_str ("Разряд 5: положительное денормализованное число\n")
+    j endFclassAnalysis
+else_6:
+	li t0, 0x40	# Проверка установки 6-го разряда
+	bne t0, t2, else_7
+    print_str ("Разряд 6: положительное нормализованное число\n")
+    j endFclassAnalysis
+else_7:
+	li t0, 0x80	# Проверка установки 7-го разряда
+	bne t0, t2, else_8
+    print_str ("Разряд 7: плююс бесконечность\n")
+    j endFclassAnalysis
+else_8:
+	li t0, 0x100	# Проверка установки 8-го разряда
+	bne t0, t2, else_9
+    print_str ("Разряд 8: сигнализирующий NaN\n")
+    j endFclassAnalysis
+else_9:
+	li t0, 0x200	# Проверка установки 9-го разряда
+	bne t0, t2, else_error
+    print_str ("Разряд 9: тихий NaN\n")
+    j endFclassAnalysis
+else_error:
+    print_str ("Ни один из необходимых разрядов не установлен\n")
+endFclassAnalysis:	# Выход без обработки по некорректному размеру числа
+.end_macro
+
