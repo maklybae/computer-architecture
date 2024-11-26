@@ -26,3 +26,7 @@
   - [ИДЗ-2](IHW2/)
     - [**Отчет**](IHW2/README.md)
     - [Программа](IHW2/program/)
+  - [ИДЗ-3](IHW3/)
+    - [**Отчет**](IHW3/README.md)
+    - [Программа](IHW3/program/)
+  
